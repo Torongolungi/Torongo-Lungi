@@ -1,0 +1,122 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#071d3b">
+<title>তরঙ্গ লুঙ্গি | TORONGO LUNGI</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f4f7fb;color:#17243a}
+header{background:#071d3b;color:white;padding:22px 16px;text-align:center}
+header h1{margin:0;color:#48d9e8;font-size:25px}
+header p{margin:8px 0 0}
+main{max-width:650px;margin:auto;padding:16px}
+h2{color:#071d3b}
+.products{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.product{background:white;border-radius:12px;padding:12px;text-align:center;box-shadow:0 2px 8px #0001}
+.pic{height:105px;background:#e2f5f8;border-radius:9px;display:grid;place-items:center;font-size:42px}
+.product h3{font-size:16px}
+button{border:0;border-radius:8px;padding:11px 14px;background:#087eaa;color:white;font-weight:bold}
+.product button{width:100%}
+.panel{background:white;padding:16px;border-radius:12px;margin-top:18px}
+input,select,textarea{width:100%;padding:12px;margin:7px 0 12px;border:1px solid #ccd5df;border-radius:8px;font-size:15px}
+label{font-weight:bold}
+#cart p{border-bottom:1px solid #eee;padding-bottom:8px}
+.order{width:100%;background:#087b58;font-size:16px}
+footer{text-align:center;padding:22px;color:#526174}
+</style>
+</head>
+<body>
+<header>
+<h1>🌊 তরঙ্গ লুঙ্গি</h1>
+<p>TORONGO LUNGI</p>
+<p>আরামের প্রতিটি মুহূর্তে তরঙ্গ। 💙</p>
+</header>
+
+<main>
+<h2>আমাদের কালেকশন</h2>
+<div class="products" id="products"></div>
+
+<section class="panel">
+<h2>🛒 আপনার কার্ট</h2>
+<div id="cart">এখনো কোনো পণ্য যোগ করেননি।</div>
+</section>
+
+<section class="panel">
+<h2>📦 অর্ডার তথ্য</h2>
+<form id="orderForm">
+<label>আপনার নাম</label>
+<input id="customer" required placeholder="আপনার নাম লিখুন">
+
+<label>মোবাইল নম্বর</label>
+<input id="phone" required type="tel" placeholder="01XXXXXXXXX">
+
+<label>সম্পূর্ণ ঠিকানা</label>
+<textarea id="address" required placeholder="গ্রাম, উপজেলা, জেলা লিখুন"></textarea>
+
+<label>পেমেন্ট পদ্ধতি</label>
+<select id="payment">
+<option>Cash on Delivery</option>
+<option>বিকাশ (ম্যানুয়াল পেমেন্ট)</option>
+<option>নগদ (ম্যানুয়াল পেমেন্ট)</option>
+</select>
+
+<button class="order" type="submit">WhatsApp-এ অর্ডার পাঠান</button>
+</form>
+</section>
+</main>
+
+<footer>
+তামাই, বেলকুচি, সিরাজগঞ্জ<br>
+© TORONGO LUNGI
+</footer>
+
+<script>
+const items=[
+{name:"তরঙ্গ লুঙ্গি - ডিজাইন ১",price:0},
+{name:"তরঙ্গ লুঙ্গি - ডিজাইন ২",price:0},
+{name:"তরঙ্গ লুঙ্গি - ডিজাইন ৩",price:0},
+{name:"তরঙ্গ লুঙ্গি - ডিজাইন ৪",price:0}
+];
+let cart=[];
+
+function showProducts(){
+document.getElementById("products").innerHTML=items.map((p,i)=>`
+<div class="product">
+<div class="pic">🧵</div>
+<h3>${p.name}</h3>
+<p>মূল্য জানতে যোগাযোগ করুন</p>
+<button onclick="addCart(${i})">কার্টে যোগ করুন</button>
+</div>`).join("");
+}
+function addCart(i){
+cart.push(items[i]);
+showCart();
+}
+function showCart(){
+const el=document.getElementById("cart");
+if(!cart.length){el.innerHTML="এখনো কোনো পণ্য যোগ করেননি।";return;}
+el.innerHTML=cart.map((p,i)=>`
+<p>${p.name} <button onclick="removeItem(${i})">বাদ দিন</button></p>`).join("");
+}
+function removeItem(i){cart.splice(i,1);showCart();}
+
+document.getElementById("orderForm").addEventListener("submit",async function(e){
+e.preventDefault();
+if(!cart.length){alert("আগে কার্টে পণ্য যোগ করুন");return;}
+const message=
+"তরঙ্গ লুঙ্গিতে নতুন অর্ডার%0A"+
+"নাম: "+encodeURIComponent(document.getElementById("customer").value)+"%0A"+
+"মোবাইল: "+encodeURIComponent(document.getElementById("phone").value)+"%0A"+
+"ঠিকানা: "+encodeURIComponent(document.getElementById("address").value)+"%0A"+
+"পেমেন্ট: "+encodeURIComponent(document.getElementById("payment").value)+"%0A"+
+"পণ্য: "+encodeURIComponent(cart.map(p=>p.name).join(", "));
+window.open("https://wa.me/?text="+message,"_blank");
+});
+showProducts();
+showCart();
+</script>
+</body>
+</html>
